@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Admin sign in{% endblock %}
+{% block auth_content %}
+<main class="login-layout">
+  <section class="login-art">
+    <a class="brand login-brand" href="{{ url_for('login') }}"><span class="brand-mark"><i class="fa-solid fa-graduation-cap"></i></span><span class="brand-name">scholar<span>desk</span></span></a>
+    <div class="login-art-content"><span class="eyebrow light-eyebrow"><span class="eyebrow-dot"></span> THE STUDENT SUCCESS PLATFORM</span><h1>Every student.<br>One clear picture.</h1><p>A calmer, smarter way to organize student records and keep your campus moving forward.</p><div class="login-illustration"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="illustration-cap"><i class="fa-solid fa-graduation-cap"></i></div><span class="float-card float-card-one"><i class="fa-solid fa-chart-line"></i> Student progress</span><span class="float-card float-card-two"><i class="fa-solid fa-user-check"></i> Records organized</span></div></div>
+    <div class="login-art-footer"><span><i class="fa-solid fa-shield-halved"></i> Private by design</span><span>Made for educators</span></div>
+  </section>
+  <section class="login-panel">
+    <div class="login-form-wrap"><div class="mobile-login-brand"><span class="brand-mark"><i class="fa-solid fa-graduation-cap"></i></span><span class="brand-name">scholar<span>desk</span></span></div><span class="eyebrow">WELCOME BACK</span><h2>Sign in to your account</h2><p class="login-subtitle">Enter your administrator credentials to continue.</p>
+      {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash flash-{{ category }}" role="alert">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+      <form method="post" class="login-form" novalidate>{{ form.hidden_tag() }}
+        <div class="field"><label for="{{ form.username.id }}">Username</label><div class="input-icon"><i class="fa-regular fa-user"></i>{{ form.username(placeholder="Your admin username", autocomplete="username", autofocus=true) }}</div>{% for error in form.username.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+        <div class="field"><div class="label-row"><label for="{{ form.password.id }}">Password</label></div><div class="input-icon"><i class="fa-solid fa-lock"></i>{{ form.password(placeholder="Enter your password", autocomplete="current-password", id="loginPassword") }}<button class="password-toggle" type="button" data-toggle-password="loginPassword" aria-label="Show password"><i class="fa-regular fa-eye"></i></button></div>{% for error in form.password.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+        <button class="button button-primary button-wide login-submit" type="submit">Sign in <i class="fa-solid fa-arrow-right"></i></button>
+      </form><div class="login-security"><i class="fa-solid fa-shield-halved"></i> Protected access for authorized administrators only</div>
+    </div><div class="login-panel-footer">Need help? Contact your system administrator.</div>
+  </section>
+</main>
+{% endblock %}

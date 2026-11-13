@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <title>{% block title %}Student records{% endblock %} · ScholarDesk</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+{% if current_user.is_authenticated %}
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="{{ url_for('dashboard') }}">
+        <span class="brand-mark"><i class="fa-solid fa-graduation-cap"></i></span>
+        <span class="brand-name">scholar<span>desk</span></span>
+      </a>
+      <div class="nav-caption">WORKSPACE</div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}"><i class="fa-solid fa-grip"></i><span>Dashboard</span></a>
+        <a class="nav-link {% if request.endpoint in ['students', 'edit_student'] %}active{% endif %}" href="{{ url_for('students') }}"><i class="fa-solid fa-users"></i><span>Student records</span></a>
+        <a class="nav-link {% if request.endpoint == 'add_student' %}active{% endif %}" href="{{ url_for('add_student') }}"><i class="fa-solid fa-user-plus"></i><span>Add new student</span></a>
+        <a class="nav-link {% if request.endpoint in ['reports', 'export_students'] %}active{% endif %}" href="{{ url_for('reports') }}"><i class="fa-solid fa-chart-pie"></i><span>Reports</span></a>
+      </nav>
+      <div class="nav-caption nav-caption-lower">PREFERENCES</div>
+      <nav class="side-nav">
+        <a class="nav-link {% if request.endpoint == 'settings' %}active{% endif %}" href="{{ url_for('settings') }}"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="support-card"><span class="support-icon"><i class="fa-regular fa-circle-question"></i></span><strong>Need a hand?</strong><span>Quick tips for managing records.</span><a href="{{ url_for('help_page') }}">View help <i class="fa-solid fa-arrow-right"></i></a></div>
+        <div class="profile-row"><span class="avatar">{{ current_user.username[:1]|upper }}</span><span class="profile-meta"><strong>{{ current_user.username }}</strong><small>Administrator</small></span><form action="{{ url_for('logout') }}" method="post" class="logout-form"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="icon-button" aria-label="Log out" title="Log out"><i class="fa-solid fa-arrow-right-from-bracket"></i></button></form></div>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar"><button class="mobile-menu icon-button" id="menuToggle" aria-label="Toggle navigation"><i class="fa-solid fa-bars"></i></button><div class="breadcrumb">Workspace <i class="fa-solid fa-chevron-right"></i> <strong>{% block breadcrumb %}Dashboard{% endblock %}</strong></div><div class="topbar-right"><span class="today-label"><i class="fa-regular fa-calendar"></i> <span id="todayDate"></span></span><span class="top-avatar">{{ current_user.username[:1]|upper }}</span></div></header>
+      <div class="page-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash flash-{{ category }}" role="status"><i class="fa-solid {% if category == 'error' %}fa-circle-exclamation{% else %}fa-circle-check{% endif %}"></i>{{ message }}<button type="button" class="flash-close" aria-label="Dismiss">&times;</button></div>{% endfor %}</div>{% endif %}{% endwith %}
+        {% block content %}{% endblock %}
+      </div>
+      <footer class="footer">© <span id="yearNow"></span> ScholarDesk <span>·</span> Student records, thoughtfully organized.</footer>
+    </main>
+  </div>
+{% else %}
+  {% block auth_content %}{% endblock %}
+{% endif %}
+<script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

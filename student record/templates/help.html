@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Quick help{% endblock %}
+{% block breadcrumb %}Quick help{% endblock %}
+{% block content %}
+<section class="page-heading-row"><div><span class="eyebrow">GETTING STARTED</span><h1>Quick help</h1><p>A few helpful notes for everyday student record management.</p></div></section>
+<section class="help-grid">
+  <article class="panel help-card"><span class="help-icon"><i class="fa-solid fa-user-plus"></i></span><h2>Add a student</h2><p>Choose <strong>Add new student</strong> in the sidebar. Student ID and email must each be unique. Required details are marked with an asterisk.</p><a class="text-link" href="{{ url_for('add_student') }}">Create a record <i class="fa-solid fa-arrow-right"></i></a></article>
+  <article class="panel help-card"><span class="help-icon help-icon-purple"><i class="fa-solid fa-magnifying-glass"></i></span><h2>Find and update records</h2><p>Use the search box for a student name or ID, then combine gender, course, and year filters. Select the edit icon to update a record.</p><a class="text-link" href="{{ url_for('students') }}">Open student records <i class="fa-solid fa-arrow-right"></i></a></article>
+  <article class="panel help-card"><span class="help-icon help-icon-green"><i class="fa-solid fa-file-csv"></i></span><h2>Download a report</h2><p>The reports page summarizes students by program and year. Export all student records to a spreadsheet-friendly CSV.</p><a class="text-link" href="{{ url_for('reports') }}">View reports <i class="fa-solid fa-arrow-right"></i></a></article>
+  <article class="panel help-card"><span class="help-icon help-icon-amber"><i class="fa-solid fa-shield-halved"></i></span><h2>Keep your account safe</h2><p>Change your administrator password from Settings. Use a unique password with at least 12 characters, uppercase and lowercase letters, a number, and a symbol.</p><a class="text-link" href="{{ url_for('settings') }}">Account settings <i class="fa-solid fa-arrow-right"></i></a></article>
+</section>
+{% endblock %}

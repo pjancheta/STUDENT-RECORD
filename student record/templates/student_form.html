@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block breadcrumb %}<a href="{{ url_for('students') }}">Student records</a> <i class="fa-solid fa-chevron-right"></i> {{ title }}{% endblock %}
+{% block content %}
+<section class="page-heading-row form-page-heading"><div><span class="eyebrow">{% if student %}RECORD {{ student.student_id }}{% else %}NEW RECORD{% endif %}</span><h1>{{ title }}</h1><p>Enter the student’s details below. Fields marked with <span class="required-mark">*</span> are required.</p></div><a class="button button-outline" href="{{ url_for('students') }}"><i class="fa-solid fa-arrow-left"></i> Back to records</a></section>
+<form method="post" class="student-edit-form" novalidate>{{ form.hidden_tag() }}
+  <section class="panel form-section"><div class="form-section-heading"><span class="form-section-icon"><i class="fa-regular fa-id-card"></i></span><div><h2>Student information</h2><p>Basic details used to identify the student.</p></div></div><div class="form-grid">
+    {% for field in [form.student_id, form.first_name, form.middle_name, form.last_name] %}<div class="field"><label for="{{ field.id }}">{{ field.label.text }}{% if field.name != 'middle_name' %}<span class="required-mark">*</span>{% endif %}</label>{{ field(class="form-control", placeholder={"student_id":"e.g. 2025-00142","first_name":"Enter first name","middle_name":"Optional","last_name":"Enter last name"}[field.name]) }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}
+    <div class="field"><label for="{{ form.gender.id }}">Gender<span class="required-mark">*</span></label>{{ form.gender(class="form-control") }}{% for error in form.gender.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+    <div class="field"><label for="{{ form.date_of_birth.id }}">Date of birth<span class="required-mark">*</span></label>{{ form.date_of_birth(class="form-control", max=today) }}{% for error in form.date_of_birth.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+  </div></section>
+  <section class="panel form-section"><div class="form-section-heading"><span class="form-section-icon form-icon-purple"><i class="fa-regular fa-address-card"></i></span><div><h2>Contact information</h2><p>How to reach the student and where they’re based.</p></div></div><div class="form-grid">
+    <div class="field"><label for="{{ form.email.id }}">Email address<span class="required-mark">*</span></label>{{ form.email(class="form-control", placeholder="student@example.com", type="email") }}{% for error in form.email.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+    <div class="field"><label for="{{ form.contact_number.id }}">Contact number<span class="required-mark">*</span></label>{{ form.contact_number(class="form-control", placeholder="+1 (555) 000-0000") }}{% for error in form.contact_number.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+    <div class="field field-full"><label for="{{ form.address.id }}">Address<span class="required-mark">*</span></label>{{ form.address(class="form-control", rows="3", placeholder="Street address, city, region") }}{% for error in form.address.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+  </div></section>
+  <section class="panel form-section"><div class="form-section-heading"><span class="form-section-icon form-icon-green"><i class="fa-solid fa-book-open"></i></span><div><h2>Academic details</h2><p>Program and current year of study.</p></div></div><div class="form-grid">
+    <div class="field"><label for="{{ form.course.id }}">Course / program<span class="required-mark">*</span></label>{{ form.course(class="form-control") }}{% for error in form.course.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+    <div class="field"><label for="{{ form.year_level.id }}">Year level<span class="required-mark">*</span></label>{{ form.year_level(class="form-control") }}{% for error in form.year_level.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+  </div></section>
+  <div class="form-actions"><a href="{{ url_for('students') }}" class="button button-outline">Cancel</a><button type="submit" class="button button-primary"><i class="fa-solid fa-check"></i> {{ "Save changes" if student else "Save student" }}</button></div>
+</form>
+{% endblock %}
